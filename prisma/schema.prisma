@@ -1,0 +1,34 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Investment {
+  id                  Int      @id @default(autoincrement())
+  buyPrice            Float    @map("buy_price") //0.00003634
+  currencyInvestment  Float    @map("currency_investment") //2,924,485
+  pairInvestment      Float    @default(0) @map("pair_investment") @ignore // buyPrice * currencyInvestment
+  pairAmount          Float    @default(0) @map("pair_amount") @ignore // currencyInvestment * currentPrice
+  pairVariation       Float    @default(0) @map("pair_variation") @ignore // pairInvestment - pairAmount
+  percentageVariation Float    @default(0) @map("percentage_variation") @ignore // (pairVariation / pairInvestment) * 100
+  currency            Currency @relation(fields: [currencyId], references: [id])
+  currencyId          Int      @map("currency_id")
+}
+
+model Currency {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique //BONK
+  pair        String //USDT
+  price       Float
+  investments Investment[]
+}
