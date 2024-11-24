@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import * as fs from 'fs';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -36,6 +37,7 @@ async function bootstrap() {
   SwaggerModule.setup('docs', app, document);
 
   // app.enableCors({ credentials: true, origin: true });
+  fs.writeFileSync('./swagger.json', JSON.stringify(document));
 
   await app.listen(process.env.PORT ?? 3000);
 }

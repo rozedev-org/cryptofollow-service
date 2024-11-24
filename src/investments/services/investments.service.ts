@@ -16,7 +16,6 @@ export class InvestmentsService {
 
     if (data.length) {
       const currencies = await this.currencyService.currencies();
- c                                      1                    2                
       return data.map((investment) => {
         const currency = currencies.find(
           (currency) => currency.id === investment.currencyId,
