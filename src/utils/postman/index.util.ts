@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import { convert } from 'openapi-to-postmanv2';
 import { Logger } from '@nestjs/common';
+import { removeIds } from '../id.utils';
 export async function updatePostmanCollection(
   swagger: OpenAPIObject,
   postmanApiKey: string,
@@ -41,7 +42,7 @@ const convertOpenApiToPostman = (swagger: OpenAPIObject) => {
           reject(new Error(conversionResult.reason));
         } else {
           const { info, item } = conversionResult.output[0].data as any;
-          const result = {
+          let result = {
             info: {
               name: info.name,
               schema: info.schema,
@@ -49,6 +50,7 @@ const convertOpenApiToPostman = (swagger: OpenAPIObject) => {
             },
             item,
           };
+          result = removeIds(result);
           resolve(result);
         }
       },

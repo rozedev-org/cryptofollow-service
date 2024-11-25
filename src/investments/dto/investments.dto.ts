@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { IsNumber } from 'class-validator';
 
 export class CreateInvestmentDto {
@@ -8,7 +8,9 @@ export class CreateInvestmentDto {
   @ApiProperty({ example: 2924485 })
   @IsNumber()
   currencyInvestment: number;
-  @ApiProperty()
+  @ApiProperty({ example: 1 })
   @IsNumber()
   currencyId: number;
 }
+
+export class UpdateInvestmentDto extends PartialType(CreateInvestmentDto) {}
