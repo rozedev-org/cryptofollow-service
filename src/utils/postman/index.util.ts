@@ -12,7 +12,6 @@ export async function updatePostmanCollection(
   swagger.components?.schemas;
 
   const postmanCollection = await convertOpenApiToPostman(swagger);
-
   const response = await axios.put(
     `https://api.getpostman.com/collections/${collectionUid}`,
     {

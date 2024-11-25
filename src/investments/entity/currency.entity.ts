@@ -10,9 +10,9 @@ export class CurrencyEntity implements Currency {
 
   @ApiProperty()
   id: number;
-  @ApiProperty()
+  @ApiProperty({ example: 'BONK' })
   name: string;
-  @ApiProperty()
+  @ApiProperty({ example: 'USDT' })
   pair: string;
   @ApiProperty()
   price: number;
