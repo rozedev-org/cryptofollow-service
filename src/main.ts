@@ -1,13 +1,19 @@
 import { NestFactory, Reflector } from '@nestjs/core';
-
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
-
 import { AppModule } from './app.module';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import * as fs from 'fs';
+import { updatePostmanCollection } from './utils/postman/index.util';
+import config from './config';
 
 async function bootstrap() {
+  const {
+    appPort,
+    postmanApiKey,
+    postmanCollectionId,
+    onUpdatePostmanCollection,
+  } = config();
   const app = await NestFactory.create(AppModule);
 
   app.setGlobalPrefix('api/cryptofollow-service/v1');
@@ -27,18 +33,23 @@ async function bootstrap() {
 
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
-  const config = new DocumentBuilder()
+  const swaggerConfig = new DocumentBuilder()
     .setTitle('Crypto Follow Service')
     .setDescription('Service of Crypto Follow')
     .setVersion('1.0')
     .build();
 
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('docs', app, document);
 
   // app.enableCors({ credentials: true, origin: true });
   fs.writeFileSync('./swagger.json', JSON.stringify(document));
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(appPort ?? 3000);
+
+  if (postmanApiKey && postmanCollectionId && onUpdatePostmanCollection) {
+    updatePostmanCollection(document, postmanApiKey, postmanCollectionId);
+  }
 }
+
 bootstrap();
