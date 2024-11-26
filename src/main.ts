@@ -50,7 +50,7 @@ async function bootstrap() {
   await app.listen(appPort ?? 3000);
 
   if (postmanApiKey && postmanCollectionId && onUpdatePostmanCollection) {
-    updatePostmanCollection(document, postmanApiKey, postmanCollectionId);
+    //updatePostmanCollection(document, postmanApiKey, postmanCollectionId);
   }
 }
 
