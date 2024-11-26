@@ -43,6 +43,8 @@ async function bootstrap() {
   SwaggerModule.setup('docs', app, document);
 
   // app.enableCors({ credentials: true, origin: true });
+  app.enableCors();
+
   fs.writeFileSync('./swagger.json', JSON.stringify(document));
 
   await app.listen(appPort ?? 3000);
