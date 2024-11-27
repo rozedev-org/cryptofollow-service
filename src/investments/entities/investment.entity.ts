@@ -12,6 +12,8 @@ export class InvestmentEntity implements Investment {
     this.currency = new CurrencyEntity(currency);
   }
 
+  userId: number;
+
   @ApiProperty()
   id: number;
   @ApiProperty()

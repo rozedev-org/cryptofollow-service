@@ -4,7 +4,7 @@ import { WalletService } from '../services/wallet.service';
 import {
   BalanceByCurrencyEntity,
   BalanceEntity,
-} from '../entity/wallet.entity';
+} from '../entities/wallet.entity';
 
 @ApiTags('wallet')
 @Controller('wallet')

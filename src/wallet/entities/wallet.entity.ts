@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CurrencyEntity } from '../../investments/entity/currency.entity';
+import { CurrencyEntity } from '../../investments/entities/currency.entity';
 
 export class BalanceEntity {
   @ApiProperty()

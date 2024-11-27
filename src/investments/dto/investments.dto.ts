@@ -11,6 +11,10 @@ export class CreateInvestmentDto {
   @ApiProperty({ example: 1 })
   @IsNumber()
   currencyId: number;
+
+  @ApiProperty({ example: 1 })
+  @IsNumber()
+  userId: number;
 }
 
 export class UpdateInvestmentDto extends PartialType(CreateInvestmentDto) {}

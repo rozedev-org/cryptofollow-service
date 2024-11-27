@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
-import { InvestmentEntity } from '../entity/investment.entity';
+import { InvestmentEntity } from '../entities/investment.entity';
 import {
   CreateInvestmentDto,
   UpdateInvestmentDto,
@@ -97,11 +97,7 @@ export class InvestmentsService {
 
   async create(data: CreateInvestmentDto) {
     return this.prisma.investment.create({
-      data: {
-        buyPrice: data.buyPrice,
-        currencyInvestment: data.currencyInvestment,
-        currencyId: data.currencyId,
-      },
+      data,
     });
   }
 

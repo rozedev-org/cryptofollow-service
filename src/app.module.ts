@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { InvestmentsModule } from './investments/investments.module';
 import { PrismaModule } from './database/prisma.module';
 import { WalletModule } from './wallet/wallet.module';
+import { UsersModule } from './users/users.module';
 @Module({
   imports: [
     // PrismaModule,
@@ -27,6 +28,7 @@ import { WalletModule } from './wallet/wallet.module';
     InvestmentsModule,
     PrismaModule,
     WalletModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
