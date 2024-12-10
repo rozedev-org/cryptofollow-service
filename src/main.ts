@@ -8,12 +8,7 @@ import { updatePostmanCollection } from './utils/postman/index.util';
 import config from './config';
 
 async function bootstrap() {
-  const {
-    appPort,
-    postmanApiKey,
-    postmanCollectionId,
-    onUpdatePostmanCollection,
-  } = config();
+  const { appPort, postmant } = config();
   const app = await NestFactory.create(AppModule);
 
   app.setGlobalPrefix('api/cryptofollow-service/v1');
@@ -49,8 +44,18 @@ async function bootstrap() {
 
   await app.listen(appPort ?? 3000);
 
-  if (postmanApiKey && postmanCollectionId && onUpdatePostmanCollection) {
-    //updatePostmanCollection(document, postmanApiKey, postmanCollectionId);
+  if (
+    postmant.onUpdatePostmanCollection &&
+    postmant.apiKey &&
+    postmant.collectionId &&
+    postmant.host
+  ) {
+    updatePostmanCollection({
+      swagger: document,
+      apiKey: postmant.apiKey,
+      collectionId: postmant.collectionId,
+      host: postmant.host,
+    });
   }
 }
 

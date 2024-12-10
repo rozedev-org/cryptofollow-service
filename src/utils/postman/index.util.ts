@@ -4,22 +4,26 @@ import axios from 'axios';
 import { convert } from 'openapi-to-postmanv2';
 import { Logger } from '@nestjs/common';
 import { removeIds } from '../id.utils';
-export async function updatePostmanCollection(
-  swagger: OpenAPIObject,
-  postmanApiKey: string,
-  collectionUid: string,
-) {
-  swagger.components?.schemas;
-
+export async function updatePostmanCollection({
+  swagger,
+  apiKey,
+  collectionId,
+  host,
+}: {
+  swagger: OpenAPIObject;
+  apiKey: string;
+  collectionId: string;
+  host: string;
+}) {
   const postmanCollection = await convertOpenApiToPostman(swagger);
   const response = await axios.put(
-    `https://api.getpostman.com/collections/${collectionUid}`,
+    `${host}/collections/${collectionId}`,
     {
       collection: postmanCollection,
     },
     {
       headers: {
-        'X-Api-Key': postmanApiKey,
+        'X-Api-Key': apiKey,
         'Content-Type': 'application/json',
       },
     },

@@ -1,11 +1,17 @@
+import config from '@app/config';
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
 import { lastValueFrom } from 'rxjs';
 import { PriceTickerResponse } from './binance.utils.interface';
 
 @Injectable()
 export class BinanceUtils {
-  constructor(private readonly httpService: HttpService) {}
+  constructor(
+    private readonly httpService: HttpService,
+
+    @Inject(config.KEY) private configService: ConfigType<typeof config>,
+  ) {}
 
   async getCurrenciesPriceByNames(currencies: string[]) {
     const prices: PriceTickerResponse[] = [];
@@ -20,9 +26,10 @@ export class BinanceUtils {
   }
 
   async getCurrencyByName(currency: string) {
+    const { host } = this.configService.binance;
     const response = await lastValueFrom(
       this.httpService.get<PriceTickerResponse>(
-        `https://api.binance.com/api/v3/ticker/price?symbol=${currency}`,
+        `${host}/api/v3/ticker/price?symbol=${currency}`,
       ),
     );
 
