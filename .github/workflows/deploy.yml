@@ -1,0 +1,17 @@
+name: Despliegue Automático
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Ejecutar script en el servidor
+        run: |
+          bash /home/jcjimenez/prueba.sh
