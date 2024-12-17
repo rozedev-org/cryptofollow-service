@@ -86,7 +86,7 @@ export class InvestmentsService {
     }
 
     const price = await this.binanceUtils.getCurrencyByName(
-      `${currency.name}/${currency.pair}`,
+      `${currency.name}${currency.pair}`,
     );
 
     currency.price = Number(price.price);
