@@ -86,7 +86,7 @@ export class InvestmentsService {
     }
 
     const price = await this.binanceUtils.getCurrencyByName(
-      `${currency.name}/${currency.pair}`,
+      `${currency.name}${currency.pair}`,
     );
 
     currency.price = Number(price.price);
@@ -97,7 +97,12 @@ export class InvestmentsService {
 
   async create(data: CreateInvestmentDto) {
     return this.prisma.investment.create({
-      data,
+      data: {
+        currencyId: data.currencyId,
+        currencyInvestment: data.currencyInvestment,
+        userId: data.userId,
+        buyPrice: data.buyPrice,
+      },
     });
   }
 
