@@ -25,4 +25,10 @@ export class UserEntity implements UserModel {
   @ApiProperty()
   @Exclude()
   password: string;
+
+  @ApiProperty()
+  loginTries: number;
+
+  @ApiProperty()
+  isEnabled: boolean;
 }

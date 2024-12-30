@@ -6,13 +6,16 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { CurrencyService } from '../services/currency.service';
 import { CreateCurrencyDto, UpdateCurrencyDto } from '../dto/currency.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { FindByIdDto } from '../../dtos/generic.dto';
+import { JwtAuthGuard } from '@app/auth/guards/jwt-authentication.guard';
 
 @ApiTags('currency')
+@UseGuards(JwtAuthGuard)
 @Controller('currency')
 export class CurrencyController {
   constructor(private readonly currencyService: CurrencyService) {}

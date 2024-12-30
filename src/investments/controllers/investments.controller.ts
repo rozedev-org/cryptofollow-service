@@ -6,13 +6,16 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { InvestmentsService } from '../services/investments.service';
 import { CreateInvestmentDto } from '../dto/investments.dto';
 import { FindByIdDto } from 'src/dtos/generic.dto';
+import { JwtAuthGuard } from '@app/auth/guards/jwt-authentication.guard';
 
 @ApiTags('investments')
+@UseGuards(JwtAuthGuard)
 @Controller('investments')
 export class InvestmentsController {
   constructor(private readonly investmentsService: InvestmentsService) {}

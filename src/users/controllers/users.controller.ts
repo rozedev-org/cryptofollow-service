@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto, UpdateUserDto } from '../dto/user.dto';
@@ -13,8 +14,10 @@ import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FindByIdDto } from '@app/dtos/generic.dto';
 import { UserEntity } from '../entities/user.entity';
 import { DefaultErrorResponse } from '@app/interfaces/error.interface';
+import { JwtAuthGuard } from '@app/auth/guards/jwt-authentication.guard';
 
 @ApiTags('Users')
+@UseGuards(JwtAuthGuard)
 @ApiResponse({ status: '4XX', type: DefaultErrorResponse })
 @ApiResponse({ status: '5XX', type: DefaultErrorResponse })
 @Controller('users')

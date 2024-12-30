@@ -37,8 +37,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('docs', app, document);
 
-  // app.enableCors({ credentials: true, origin: true });
-  app.enableCors();
+  app.enableCors({ credentials: true, origin: true });
 
   fs.writeFileSync('./swagger.json', JSON.stringify(document));
 
