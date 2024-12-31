@@ -10,7 +10,7 @@ handle_error() {
 
 load_config() {
 # Cargar archivo de configuración
-config_file="/app/cryptofollow/dev/cryptofollow-service/cicd/config.env"
+config_file="/home/jcjimenez/app/cryptofollow/dev/cryptofollow-service/cicd"
 if [ -f "$config_file" ]; then
   source "$config_file"
   IP=$(echo $IP | tr -d '\r')
