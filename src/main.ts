@@ -10,6 +10,7 @@ import { sh } from '@common/utils/sh.util';
 
 async function bootstrap() {
   if (process.env.ENVIRONMENT !== 'LOCAL') {
+    await sh('npm run migrations:generate');
     await sh('npm run migrations:sync');
   }
 
