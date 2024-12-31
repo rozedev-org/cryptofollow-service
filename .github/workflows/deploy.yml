@@ -4,39 +4,51 @@ on:
   push:
     branches:
       - dev
+      - staging
+      - production
 
 jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - name: Checkout
+      - name: Checkout el repositorio
         uses: actions/checkout@v2
 
       - name: Determinar archivo de configuración según la rama
+        id: set-config
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
-            export CONFIG_FILE=./cicd/config-dev.env
-          elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            export CONFIG_FILE=./cicd/config-prod.env
+            echo "CONFIG_FILE=./cicd/config-dev.env" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == "refs/heads/staging" ]]; then
+            echo "CONFIG_FILE=./cicd/config-staging.env" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == "refs/heads/production" ]]; then
+            echo "CONFIG_FILE=./cicd/config-prod.env" >> $GITHUB_ENV
           else
-            echo "Rama desconocida, no se cargará ningún archivo de configuración."
+            echo "Rama desconocida: ${{ github.ref }}"
             exit 1
           fi
-          echo "Archivo de configuración seleccionado: $CONFIG_FILE"
-          source $CONFIG_FILE
+
+      - name: Verificar archivo de configuración
+        run: |
+          ls -l $CONFIG_FILE
+          cat $CONFIG_FILE
 
       - name: Ejecutar script para obtener el código
         run: |
+          source $CONFIG_FILE
           bash ./cicd/1-pull-code.sh
 
       - name: Ejecutar script para construir la imagen
         run: |
+          source $CONFIG_FILE
           bash ./cicd/2-build-image.sh
 
       - name: Ejecutar script para subir la imagen
         run: |
+          source $CONFIG_FILE
           bash ./cicd/3-push-image.sh
 
       - name: Ejecutar script para aplicar en Kubernetes
         run: |
+          source $CONFIG_FILE
           bash ./cicd/4-k8s-apply.sh
