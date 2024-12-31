@@ -32,7 +32,7 @@ import { AuthModule } from './auth/auth.module';
     PrismaModule,
     WalletModule,
     UsersModule,
-    // AuthModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

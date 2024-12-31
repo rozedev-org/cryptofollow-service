@@ -6,8 +6,14 @@ import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import * as fs from 'fs';
 import { updatePostmanCollection } from './utils/postman/index.util';
 import config from './config';
+import { sh } from '@common/utils/sh.util';
 
 async function bootstrap() {
+  if (process.env.ENVIRONMENT !== 'LOCAL') {
+    await sh('npm run migrations:generate');
+    await sh('npm run migrations:sync');
+  }
+
   const { appPort, postmant } = config();
   const app = await NestFactory.create(AppModule);
 
@@ -37,8 +43,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('docs', app, document);
 
-  // app.enableCors({ credentials: true, origin: true });
-  app.enableCors();
+  app.enableCors({ credentials: true, origin: true });
 
   fs.writeFileSync('./swagger.json', JSON.stringify(document));
 

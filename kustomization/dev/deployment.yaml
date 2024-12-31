@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cryptofollow-service
+  namespace: cryptofollow-dev
+  labels:
+    app: cryptofollow-service
+spec:
+  selector:
+    matchLabels:
+      name: cryptofollow-service-pod
+      app: cryptofollow-service
+  replicas: 1
+  revisionHistoryLimit: 0
+  template:
+    metadata:
+      name: cryptofollow-service-pod
+      labels:
+        name: cryptofollow-service-pod
+        app: cryptofollow-service
+    spec:
+      containers:
+        - name: cryptofollow-service
+          image: cryptofollow.cloud:32000/cryptofollow-service-dev
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          # resources:
+          # requests:
+          #   memory: '200Mi'
+          #   cpu: '100m'
+          # limits:
+          #   memory: '500Mi'
+          #   cpu: '200m'
+          envFrom:
+            - secretRef:
+                name: cryptofollow-service-env
+            - configMapRef:
+                name: cryptofollow-service-cm
