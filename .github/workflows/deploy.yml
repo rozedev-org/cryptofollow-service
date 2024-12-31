@@ -36,7 +36,7 @@ jobs:
       - name: Ejecutar script para construir la imagen
         run: |
           source $CONFIG_FILE
-          docker build -f ../Dockerfile -t "$IMAGE" ../
+          docker build -t "$IMAGE" .
           echo "Construcción de la imagen de Docker completada con éxito."
 
       - name: Ejecutar script para subir la imagen
