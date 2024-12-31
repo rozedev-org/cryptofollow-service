@@ -49,6 +49,6 @@ jobs:
         run: |
           source $CONFIG_FILE
           echo "Iniciando despliegue en Kubernetes..."
-          microk8s kubectl apply -k ./kustomization/${{ github.ref }}
-          microk8s kubectl set image deployment/$APP_NAME $APP_NAME=$IMAGE -n cryptofollow-${{ github.ref }} ||
-          microk8s kubectl rollout restart deployment/$APP_NAME -n cryptofollow-${{ github.ref }} || handle_error "despliegue 3"
+          microk8s kubectl apply -k ./kustomization/$TARGET_ENVIROMENT
+          microk8s kubectl set image deployment/$APP_NAME $APP_NAME=$IMAGE -n cryptofollow-$TARGET_ENVIROMENT ||
+          microk8s kubectl rollout restart deployment/$APP_NAME -n cryptofollow-$TARGET_ENVIROMENT || handle_error "despliegue 3"
