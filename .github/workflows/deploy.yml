@@ -41,6 +41,7 @@ jobs:
       - name: Ejecutar script para construir la imagen
         run: |
           source $CONFIG_FILE
+          cat $CONFIG_FILE
           bash ./cicd/2-build-image.sh
 
       - name: Ejecutar script para subir la imagen
