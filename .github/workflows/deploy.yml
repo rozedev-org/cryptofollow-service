@@ -28,24 +28,24 @@ jobs:
             exit 1
           fi
 
-      - name: Verificar archivo de configuración
+      - name: VERIFY CONFIG
         run: |
           ls -l $CONFIG_FILE
           cat $CONFIG_FILE
 
-      - name: Ejecutar script para construir la imagen
+      - name: BUILD IMAGE
         run: |
           source $CONFIG_FILE
           docker build -t "$IMAGE" .
           echo "Construcción de la imagen de Docker completada con éxito."
 
-      - name: Ejecutar script para subir la imagen
+      - name: UPLOAD IMAGE
         run: |
           source $CONFIG_FILE
           echo "Iniciando empuje de la imagen de Docker al registro..."
           docker push "$IMAGE:latest"
           echo "Empuje de la imagen de Docker completado con éxito."
-      - name: Ejecutar script para aplicar en Kubernetes
+      - name: DEPLOY
         run: |
           source $CONFIG_FILE
           echo "Iniciando despliegue en Kubernetes..."
