@@ -6,8 +6,13 @@ import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import * as fs from 'fs';
 import { updatePostmanCollection } from './utils/postman/index.util';
 import config from './config';
+import { sh } from '@common/utils/sh.util';
 
 async function bootstrap() {
+  if (process.env.ENVIRONMENT !== 'LOCAL') {
+    await sh('npm run migrations:sync');
+  }
+
   const { appPort, postmant } = config();
   const app = await NestFactory.create(AppModule);
 
