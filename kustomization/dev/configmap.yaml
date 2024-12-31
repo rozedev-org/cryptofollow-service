@@ -4,8 +4,8 @@ metadata:
   name: cryptofollow-service-cm
   namespace: cryptofollow-dev
 data:
-  PORT: 3000
-  JWT_EXPIRATION_TIME: 86400
+  PORT: '3000'
+  JWT_EXPIRATION_TIME: '86400'
   ENVIRONMENT: 'dev'
   POSTMAN_COLLECTION_ID: '8182918-6acfd7c6-2a5d-4948-ae08-f3d8288b2085'
   POSTMAN_HOST: 'https://api.getpostman.com'
