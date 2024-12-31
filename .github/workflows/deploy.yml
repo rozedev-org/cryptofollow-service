@@ -33,16 +33,11 @@ jobs:
           ls -l $CONFIG_FILE
           cat $CONFIG_FILE
 
-      - name: Ejecutar script para obtener el código
-        run: |
-          source $CONFIG_FILE
-          bash ./cicd/1-pull-code.sh
-
       - name: Ejecutar script para construir la imagen
         run: |
           source $CONFIG_FILE
-          cat $CONFIG_FILE
-          bash ./cicd/2-build-image.sh
+          docker build -f ../Dockerfile -t "$IMAGE" ../
+          echo "Construcción de la imagen de Docker completada con éxito."
 
       - name: Ejecutar script para subir la imagen
         run: |
