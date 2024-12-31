@@ -42,9 +42,13 @@ jobs:
       - name: Ejecutar script para subir la imagen
         run: |
           source $CONFIG_FILE
-          bash ./cicd/3-push-image.sh
-
+          echo "Iniciando empuje de la imagen de Docker al registro..."
+          docker push "$IMAGE:latest"
+          echo "Empuje de la imagen de Docker completado con éxito."
       - name: Ejecutar script para aplicar en Kubernetes
         run: |
           source $CONFIG_FILE
-          bash ./cicd/4-k8s-apply.sh
+          echo "Iniciando despliegue en Kubernetes..."
+          microk8s kubectl apply -k ./kustomization/${{ github.ref }}
+          microk8s kubectl set image deployment/$APP_NAME $APP_NAME=$IMAGE -n cryptofollow-${{ github.ref }} ||
+          microk8s kubectl rollout restart deployment/$APP_NAME -n cryptofollow-${{ github.ref }} || handle_error "despliegue 3"
