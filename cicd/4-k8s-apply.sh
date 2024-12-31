@@ -1,5 +1,5 @@
 #!/bin/bash
-source ./utils.sh
+source ./cicd//utils.sh
 
 # Desplegar en Kubernetes
 echo "Iniciando despliegue en Kubernetes..."

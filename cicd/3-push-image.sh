@@ -1,5 +1,5 @@
 #!/bin/bash
-source ./utils.sh
+source ./cicd//utils.sh
 
 # Empujar la imagen de Docker
 echo "Iniciando empuje de la imagen de Docker al registro..."
