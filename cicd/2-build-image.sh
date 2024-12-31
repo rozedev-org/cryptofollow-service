@@ -1,5 +1,5 @@
 #!/bin/bash
-source ./utils.sh
+source ./cicd//utils.sh
 
 echo "Iniciando construcción de la imagen de Docker..."
 docker build -f ../Dockerfile -t "$IMAGE" ../ || handle_error "construcción"

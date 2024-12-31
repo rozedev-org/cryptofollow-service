@@ -1,5 +1,5 @@
 #!/bin/bash
-source ./utils.sh
+source ./cicd//utils.sh
 
 #Pull changes
 git pull || handle_error "pull"
