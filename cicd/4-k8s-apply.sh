@@ -1,8 +1,6 @@
 #!/bin/bash
 source ./utils.sh
 
-load_config
-
 # Desplegar en Kubernetes
 echo "Iniciando despliegue en Kubernetes..."
 microk8s kubectl apply -k ../kustomization/$TARGET_ENVIROMENT || handle_error "despliegue 1"

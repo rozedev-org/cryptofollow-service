@@ -12,6 +12,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Ejecutar script en el servidor
+      - name: Determinar archivo de configuración según la rama
         run: |
-          bash /home/jcjimenez/prueba.sh
+          if [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
+            export CONFIG_FILE=./cicd/config-dev.env
+          elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            export CONFIG_FILE=./cicd/config-prod.env
+          else
+            echo "Rama desconocida, no se cargará ningún archivo de configuración."
+            exit 1
+          fi
+          echo "Archivo de configuración seleccionado: $CONFIG_FILE"
+          source $CONFIG_FILE
+
+      - name: Ejecutar script para obtener el código
+        run: |
+          bash ./cicd/1-pull-code.sh
+
+      - name: Ejecutar script para construir la imagen
+        run: |
+          bash ./cicd/2-build-image.sh
+
+      - name: Ejecutar script para subir la imagen
+        run: |
+          bash ./cicd/3-push-image.sh
+
+      - name: Ejecutar script para aplicar en Kubernetes
+        run: |
+          bash ./cicd/4-k8s-apply.sh
