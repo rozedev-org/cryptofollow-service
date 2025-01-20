@@ -24,7 +24,8 @@
     "migrations:generate": "npx prisma migrate dev",
     "migrations:sync": "npx prisma generate",
     "migrations:reset": "npx prisma migrate reset",
-    "migrations:seed": "npx prisma db seed "
+    "migrations:seed": "npx prisma db seed ",
+    "prepare": "husky"
   },
   "dependencies": {
     "@nestjs/axios": "^3.1.2",
@@ -71,6 +72,7 @@
     "eslint": "^9.14.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
+    "husky": "^9.1.7",
     "jest": "^29.7.0",
     "prettier": "^3.3.3",
     "prisma": "^5.22.0",
