@@ -3,11 +3,13 @@ import { PrismaService } from '../../database/prisma.service';
 import { InvestmentEntity } from '../entities/investment.entity';
 import {
   CreateInvestmentDto,
+  GeInvestmentsDto,
   UpdateInvestmentDto,
 } from '../dto/investments.dto';
 import { CurrencyService } from './currency.service';
 import { BinanceUtils } from '../utils/binance.util';
 import { FindByIdDto } from '../../dtos/generic.dto';
+import { PageMetaDto } from '@common/dtos/page-meta.dto';
 
 @Injectable()
 export class InvestmentsService {
@@ -17,9 +19,22 @@ export class InvestmentsService {
     private readonly binanceUtils: BinanceUtils,
   ) {}
 
-  async investments() {
+  async investments(queryParams: GeInvestmentsDto) {
+    const { take, page, getAll } = queryParams;
+
+    const querySpecs = !getAll
+      ? {
+          take,
+          skip: (page - 1) * take,
+        }
+      : undefined;
+
     // Fetch all investment records from the database using Prisma
-    const data = await this.prisma.investment.findMany();
+    const data = await this.prisma.investment.findMany({
+      ...querySpecs,
+    });
+
+    const itemCount = await this.prisma.investment.count();
 
     // Check if any investment records exist
     if (data.length) {
@@ -57,7 +72,7 @@ export class InvestmentsService {
       await this.currencyService.updateManyWitIds(currencies);
 
       // Map the investment data to include currency details and return it
-      return data.map((investment) => {
+      const foromatedData = data.map((investment) => {
         // Find the associated currency for the investment
         const currency = currencies.find(
           (currency) => currency.id === investment.currencyId,
@@ -68,6 +83,19 @@ export class InvestmentsService {
         // Create and return a new InvestmentEntity object with investment and currency details
         return new InvestmentEntity(investment, currency);
       });
+
+      const pageMetaDto = new PageMetaDto({
+        itemCount,
+        pageOptionsDto: {
+          ...queryParams,
+          take: getAll ? itemCount : queryParams.take,
+        },
+      });
+
+      return {
+        data: foromatedData,
+        meta: pageMetaDto,
+      };
     }
   }
 

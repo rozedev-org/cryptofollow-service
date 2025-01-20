@@ -1,3 +1,4 @@
+import { PageOptionsDto } from '@common/dtos/page.dto';
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { IsNumber } from 'class-validator';
 
@@ -18,3 +19,5 @@ export class CreateInvestmentDto {
 }
 
 export class UpdateInvestmentDto extends PartialType(CreateInvestmentDto) {}
+
+export class GeInvestmentsDto extends PageOptionsDto {}
