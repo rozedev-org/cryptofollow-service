@@ -5,7 +5,7 @@ on:
     branches:
       - dev
       - staging
-      - production
+      - main
 
 jobs:
   deploy:
@@ -21,8 +21,8 @@ jobs:
             echo "CONFIG_FILE=./cicd/config-dev.env" >> $GITHUB_ENV
           elif [[ "${{ github.ref }}" == "refs/heads/staging" ]]; then
             echo "CONFIG_FILE=./cicd/config-staging.env" >> $GITHUB_ENV
-          elif [[ "${{ github.ref }}" == "refs/heads/production" ]]; then
-            echo "CONFIG_FILE=./cicd/config-prod.env" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "CONFIG_FILE=./cicd/config-main.env" >> $GITHUB_ENV
           else
             echo "Rama desconocida: ${{ github.ref }}"
             exit 1
