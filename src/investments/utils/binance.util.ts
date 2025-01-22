@@ -32,10 +32,10 @@ export class BinanceUtils {
         `${host}/api/v3/ticker/price?symbol=${currency}`,
       ),
     );
-      return response.data;
-    } catch (error) {
-      console.log('error :>> ', error);
-      throw new Error('Failed to fetch currency price');
-    }
+    return response.data;
+  }
+  catch(error: any) {
+    console.log('error :>> ', error);
+    throw new Error('Failed to fetch currency price');
   }
 }
