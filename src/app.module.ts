@@ -7,6 +7,8 @@ import { AppService } from './app.service';
 import { InvestmentsModule } from './investments/investments.module';
 import { PrismaModule } from './database/prisma.module';
 import { WalletModule } from './wallet/wallet.module';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     // PrismaModule,
@@ -21,12 +23,16 @@ import { WalletModule } from './wallet/wallet.module';
         JWT_SECRET: Joi.string().required(),
         POSTMAN_COLLECTION_ID: Joi.string().required(),
         POSTMAN_API_KEY: Joi.string().required(),
+        POSTMAN_HOST: Joi.string().required(),
         ON_UPDATE_POSTMAN_COLLECTION: Joi.boolean().required(),
+        BINANCE_HOST: Joi.string().required(),
       }),
     }),
     InvestmentsModule,
     PrismaModule,
     WalletModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,0 +1,54 @@
+name: Despliegue Automático
+
+on:
+  push:
+    branches:
+      - dev
+      - staging
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout el repositorio
+        uses: actions/checkout@v2
+
+      - name: Determinar archivo de configuración según la rama
+        id: set-config
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
+            echo "CONFIG_FILE=./cicd/config-dev.env" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == "refs/heads/staging" ]]; then
+            echo "CONFIG_FILE=./cicd/config-staging.env" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "CONFIG_FILE=./cicd/config-main.env" >> $GITHUB_ENV
+          else
+            echo "Rama desconocida: ${{ github.ref }}"
+            exit 1
+          fi
+
+      - name: VERIFY CONFIG
+        run: |
+          ls -l $CONFIG_FILE
+          cat $CONFIG_FILE
+
+      - name: BUILD IMAGE
+        run: |
+          source $CONFIG_FILE
+          docker build -t "$IMAGE" .
+          echo "Construcción de la imagen de Docker completada con éxito."
+
+      - name: UPLOAD IMAGE
+        run: |
+          source $CONFIG_FILE
+          echo "Iniciando empuje de la imagen de Docker al registro..."
+          docker push "$IMAGE:latest"
+          echo "Empuje de la imagen de Docker completado con éxito."
+      - name: DEPLOY
+        run: |
+          source $CONFIG_FILE
+          echo "Iniciando despliegue en Kubernetes..."
+          microk8s kubectl apply -k ./kustomization/$TARGET_ENVIROMENT
+          microk8s kubectl set image deployment/$APP_NAME $APP_NAME=$IMAGE -n cryptofollow-$TARGET_ENVIROMENT ||
+          microk8s kubectl rollout restart deployment/$APP_NAME -n cryptofollow-$TARGET_ENVIROMENT || handle_error "despliegue 3"

@@ -23,6 +23,8 @@ model Investment {
   percentageVariation Float    @default(0) @map("percentage_variation") @ignore // (pairVariation / pairInvestment) * 100
   currency            Currency @relation(fields: [currencyId], references: [id])
   currencyId          Int      @map("currency_id")
+  User                User     @relation(fields: [userId], references: [id])
+  userId              Int      @map("user_id")
 }
 
 model Currency {
@@ -31,4 +33,15 @@ model Currency {
   pair        String //USDT
   price       Float
   investments Investment[]
+}
+
+model User {
+  id          Int          @id @default(autoincrement())
+  email       String       @unique
+  password    String
+  firstName   String       @map("first_name")
+  lastName    String       @map("last_name")
+  investments Investment[]
+  isEnabled   Boolean      @default(true) @map("is_enabled")
+  loginTries  Int          @default(0) @map("login_tries")
 }

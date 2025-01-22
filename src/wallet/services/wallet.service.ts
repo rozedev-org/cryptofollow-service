@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
-import { InvestmentEntity } from 'src/investments/entity/investment.entity';
+import { InvestmentEntity } from 'src/investments/entities/investment.entity';
 import {
   BalanceByCurrencyEntity,
   BalanceEntity,
-} from '../entity/wallet.entity';
+} from '../entities/wallet.entity';
 
 @Injectable()
 export class WalletService {
