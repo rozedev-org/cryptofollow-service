@@ -36,7 +36,7 @@ spec:
           livenessProbe:
             httpGet:
               path: /api/cryptofollow-service/v1/health
-              port: 8000
+              port: 3000
               scheme: HTTP # or HTTPS
             initialDelaySeconds: 10 # how long to wait before checking
             periodSeconds: 10 # how long to wait between checks
@@ -46,7 +46,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /api/cryptofollow-service/v1/health
-              port: 8000
+              port: 3000
               scheme: HTTP # or HTTPS
             initialDelaySeconds: 5 # how long to wait before checking
             periodSeconds: 5 # how long to wait between checks
