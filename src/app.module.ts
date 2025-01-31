@@ -9,6 +9,7 @@ import { PrismaModule } from './database/prisma.module';
 import { WalletModule } from './wallet/wallet.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { HealthModule } from './health/health.module';
 @Module({
   imports: [
     // PrismaModule,
@@ -37,6 +38,7 @@ import { AuthModule } from './auth/auth.module';
     WalletModule,
     UsersModule,
     AuthModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

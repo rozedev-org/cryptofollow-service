@@ -32,6 +32,26 @@ spec:
           # limits:
           #   memory: '500Mi'
           #   cpu: '200m'
+          livenessProbe:
+            httpGet:
+              path: /api/cryptofollow-service/v1/health
+              port: 8000
+              scheme: HTTP # or HTTPS
+            initialDelaySeconds: 10 # how long to wait before checking
+            periodSeconds: 10 # how long to wait between checks
+            successThreshold: 1 # how many successes to hit before accepting
+            failureThreshold: 50 # how many failures to accept before failing
+            timeoutSeconds: 10 # how long to wait for a response
+          readinessProbe:
+            httpGet:
+              path: /api/cryptofollow-service/v1/health
+              port: 8000
+              scheme: HTTP # or HTTPS
+            initialDelaySeconds: 5 # how long to wait before checking
+            periodSeconds: 5 # how long to wait between checks
+            successThreshold: 1 # how many successes to hit before accepting
+            failureThreshold: 50 # how many failures to accept before failing
+            timeoutSeconds: 10
           envFrom:
             - secretRef:
                 name: cryptofollow-service-env
