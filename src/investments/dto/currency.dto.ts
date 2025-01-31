@@ -1,3 +1,4 @@
+import { PageOptionsDto } from '@common/dtos/page.dto';
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { IsNumber, IsString } from 'class-validator';
 
@@ -20,3 +21,7 @@ export class UpdateCurrencyDtoWithId extends PartialType(CreateCurrencyDto) {
 }
 
 export class UpdateCurrencyDto extends PartialType(CreateCurrencyDto) {}
+
+
+
+export class GetCurrenciesDto extends PageOptionsDto {}

@@ -6,10 +6,11 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { CurrencyService } from '../services/currency.service';
-import { CreateCurrencyDto, UpdateCurrencyDto } from '../dto/currency.dto';
+import { CreateCurrencyDto, GetCurrenciesDto, UpdateCurrencyDto } from '../dto/currency.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { FindByIdDto } from '../../dtos/generic.dto';
 import { JwtAuthGuard } from '@app/auth/guards/jwt-authentication.guard';
@@ -21,8 +22,8 @@ export class CurrencyController {
   constructor(private readonly currencyService: CurrencyService) {}
 
   @Get()
-  getCurrencies() {
-    return this.currencyService.currencies();
+  getCurrencies(@Query() queryParams: GetCurrenciesDto) {
+    return this.currencyService.currencies(queryParams);
   }
 
   @Get(':id')
