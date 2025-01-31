@@ -2,18 +2,45 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
 import {
   CreateCurrencyDto,
+  GetCurrenciesDto,
   UpdateCurrencyDto,
   UpdateCurrencyDtoWithId,
 } from '../dto/currency.dto';
 import { FindByIdDto } from '../../dtos/generic.dto';
+import { PageMetaDto } from '@common/dtos/page-meta.dto';
 
 @Injectable()
 export class CurrencyService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async currencies() {
-    const data = await this.prisma.currency.findMany();
-    return data;
+  async currencies(queryParams: GetCurrenciesDto) {
+    const { take, page, getAll } = queryParams;
+
+    const querySpecs = !getAll
+      ? {
+          take,
+          skip: (page - 1) * take,
+        }
+      : undefined;
+
+    const data = await this.prisma.currency.findMany({
+      ...querySpecs,
+    });
+
+    const itemCount = await this.prisma.investment.count();
+
+    const pageMetaDto = new PageMetaDto({
+      itemCount,
+      pageOptionsDto: {
+        ...queryParams,
+        take: getAll ? itemCount : queryParams.take,
+      },
+    });
+
+    return {
+      data,
+      meta: pageMetaDto,
+    };
   }
 
   async findById({ id }: FindByIdDto) {
