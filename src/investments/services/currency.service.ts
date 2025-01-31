@@ -27,7 +27,7 @@ export class CurrencyService {
       ...querySpecs,
     });
 
-    const itemCount = await this.prisma.investment.count();
+    const itemCount = await this.prisma.currency.count();
 
     const pageMetaDto = new PageMetaDto({
       itemCount,
