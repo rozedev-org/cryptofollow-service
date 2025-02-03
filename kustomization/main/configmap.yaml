@@ -11,3 +11,5 @@ data:
   POSTMAN_HOST: 'https://api.getpostman.com'
   ON_UPDATE_POSTMAN_COLLECTION: 'false'
   BINANCE_HOST: 'https://api.binance.com'
+  BASE_URL: 'https://www.cryptofollow.cloud'
+  FRONTEND_REDIRECT_URL: 'https://www.cryptofollow.cloud'

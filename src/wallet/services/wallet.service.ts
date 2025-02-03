@@ -5,10 +5,16 @@ import {
   BalanceByCurrencyEntity,
   BalanceEntity,
 } from '../entities/wallet.entity';
+import { GetBalanceByCurrencyDto } from '../dto/wallet.dto';
+import { CurrencyService } from '@app/investments/services/currency.service';
+import { PageMetaDto } from '@common/dtos/page-meta.dto';
 
 @Injectable()
 export class WalletService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly currencyService: CurrencyService,
+  ) {}
 
   async getBalance(): Promise<BalanceEntity> {
     const invesments = await this.prisma.investment.findMany({
@@ -27,7 +33,9 @@ export class WalletService {
     return { balance };
   }
 
-  async getBalanceByCurrencies() {
+  async getBalanceByCurrencies(queryParams: GetBalanceByCurrencyDto) {
+    const { take, page, getAll } = queryParams;
+
     const invesments = await this.prisma.investment.findMany({
       include: { currency: true },
     });
@@ -63,6 +71,21 @@ export class WalletService {
       });
     });
 
-    return balanceByCurrency;
+    const itemCount = balanceByCurrency.length;
+    const pageMetaDto = new PageMetaDto({
+      itemCount: itemCount,
+      pageOptionsDto: {
+        ...queryParams,
+        take: getAll ? itemCount : queryParams.take,
+      },
+    });
+
+    const start = (page - 1) * take;
+    const end = start + take;
+
+    return {
+      data: getAll ? balanceByCurrency : balanceByCurrency.slice(start, end),
+      meta: pageMetaDto,
+    };
   }
 }

@@ -9,6 +9,7 @@ import { PrismaModule } from './database/prisma.module';
 import { WalletModule } from './wallet/wallet.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { HealthModule } from './health/health.module';
 @Module({
   imports: [
     // PrismaModule,
@@ -26,6 +27,10 @@ import { AuthModule } from './auth/auth.module';
         POSTMAN_HOST: Joi.string().required(),
         ON_UPDATE_POSTMAN_COLLECTION: Joi.boolean().required(),
         BINANCE_HOST: Joi.string().required(),
+        GOOGLE_CLIENT_ID: Joi.string().required(),
+        GOOGLE_CLIENT_SECRET: Joi.string().required(),
+        BASE_URL: Joi.string().required(),
+        FRONTEND_REDIRECT_URL: Joi.string().required(),
       }),
     }),
     InvestmentsModule,
@@ -33,6 +38,7 @@ import { AuthModule } from './auth/auth.module';
     WalletModule,
     UsersModule,
     AuthModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

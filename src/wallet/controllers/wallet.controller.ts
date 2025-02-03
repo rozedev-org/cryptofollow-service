@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { WalletService } from '../services/wallet.service';
 import {
@@ -6,6 +6,7 @@ import {
   BalanceEntity,
 } from '../entities/wallet.entity';
 import { JwtAuthGuard } from '@app/auth/guards/jwt-authentication.guard';
+import { GetBalanceByCurrencyDto } from '../dto/wallet.dto';
 
 @ApiTags('wallet')
 @UseGuards(JwtAuthGuard)
@@ -20,8 +21,8 @@ export class WalletController {
   }
 
   @Get('currencies')
-  @ApiOkResponse({ type: BalanceByCurrencyEntity, isArray: true })
-  getBalanceByCurrencies() {
-    return this.walletService.getBalanceByCurrencies();
+  // @ApiOkResponse({ type: BalanceByCurrencyEntity, isArray: true })
+  getBalanceByCurrencies(@Query() queryParams: GetBalanceByCurrencyDto) {
+    return this.walletService.getBalanceByCurrencies(queryParams);
   }
 }

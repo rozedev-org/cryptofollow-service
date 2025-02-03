@@ -10,6 +10,7 @@ import { UsersModule } from '../users/users.module';
 import { LocalStrategy } from './strategies/local.strategy';
 import config from '@app/config';
 import { PrismaService } from '@app/database/prisma.service';
+import { GoogleStrategy } from './strategies/google.strategy';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { PrismaService } from '@app/database/prisma.service';
     JwtStrategy,
     UsersService,
     PrismaService,
+    GoogleStrategy,
   ],
 })
 export class AuthModule {}

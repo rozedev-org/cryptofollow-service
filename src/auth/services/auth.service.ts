@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../../users/services/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto } from '@app/users/dto/user.dto';
 @Injectable()
 export class AuthService {
   constructor(
@@ -58,5 +59,18 @@ export class AuthService {
     } catch (e) {
       throw new UnauthorizedException('not allow');
     }
+  }
+
+  async existsUser(email: string) {
+    try {
+      const user = await this.userService.findByEmail({ email });
+      return user;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async signup(createUserDto: CreateUserDto) {
+    return await this.userService.create(createUserDto);
   }
 }
