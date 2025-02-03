@@ -16,9 +16,12 @@ export class WalletService {
     private readonly currencyService: CurrencyService,
   ) {}
 
-  async getBalance(): Promise<BalanceEntity> {
+  async getBalance(userId: number): Promise<BalanceEntity> {
     const invesments = await this.prisma.investment.findMany({
       include: { currency: true },
+      where: {
+        userId,
+      },
     });
 
     const formatedInvesment = invesments.map(
@@ -33,11 +36,17 @@ export class WalletService {
     return { balance };
   }
 
-  async getBalanceByCurrencies(queryParams: GetBalanceByCurrencyDto) {
+  async getBalanceByCurrencies(
+    queryParams: GetBalanceByCurrencyDto,
+    userId: number,
+  ) {
     const { take, page, getAll } = queryParams;
 
     const invesments = await this.prisma.investment.findMany({
       include: { currency: true },
+      where: {
+        userId,
+      },
     });
 
     let formatedInvesment = invesments.map(

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { User as UserModel } from '@prisma/client';
+import { User as UserModel, UserRole } from '@prisma/client';
 import { Exclude } from 'class-transformer';
 export class UserEntity implements UserModel {
   constructor({
@@ -9,13 +9,15 @@ export class UserEntity implements UserModel {
     lastName,
     password,
     picture,
+    role,
   }: UserModel) {
     this.id = id;
     this.email = email;
     this.firstName = firstName;
     this.lastName = lastName;
     this.password = password;
-    this.picture;
+    this.picture = picture;
+    this.role = role;
   }
 
   @ApiProperty()
@@ -42,4 +44,10 @@ export class UserEntity implements UserModel {
 
   @ApiProperty()
   picture: string;
+
+  @ApiProperty({
+    enum: UserRole,
+    enumName: 'Role',
+  })
+  role: UserRole;
 }

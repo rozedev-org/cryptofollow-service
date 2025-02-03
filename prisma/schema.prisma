@@ -45,4 +45,10 @@ model User {
   isEnabled   Boolean      @default(true) @map("is_enabled")
   loginTries  Int          @default(0) @map("login_tries")
   picture     String       @default("https://icon-icons.com/icons2/1248/PNG/256/user_84308.png")
+  role        UserRole     @default(USER)
+}
+
+enum UserRole {
+  ADMIN
+  USER
 }

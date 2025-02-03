@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, UserRole } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
@@ -29,6 +29,7 @@ async function main() {
         firstName: 'Admin',
         lastName: 'User',
         password: hashedPassword,
+        role: UserRole.ADMIN,
       },
       where: {
         email: 'admin@rozedev.com',
