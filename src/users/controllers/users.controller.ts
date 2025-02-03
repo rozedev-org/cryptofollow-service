@@ -1,23 +1,32 @@
+import { JwtAuthGuard } from '@app/auth/guards/jwt-authentication.guard';
+import { FindByIdDto } from '@app/dtos/generic.dto';
+import { DefaultErrorResponse } from '@app/interfaces/error.interface';
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Post,
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { UsersService } from '../services/users.service';
+import {
+  ApiOkResponse,
+  ApiProperty,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CreateUserDto, UpdateUserDto } from '../dto/user.dto';
-import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { FindByIdDto } from '@app/dtos/generic.dto';
 import { UserEntity } from '../entities/user.entity';
-import { DefaultErrorResponse } from '@app/interfaces/error.interface';
-import { JwtAuthGuard } from '@app/auth/guards/jwt-authentication.guard';
+import { UsersService } from '../services/users.service';
 
+import { Roles } from '@app/auth/decorators/roles.decorator';
+import { RolesGuard } from '@app/auth/guards/roles.guard';
+import { UserRole } from '@prisma/client';
 @ApiTags('Users')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(UserRole.ADMIN)
 @ApiResponse({ status: '4XX', type: DefaultErrorResponse })
 @ApiResponse({ status: '5XX', type: DefaultErrorResponse })
 @Controller('users')

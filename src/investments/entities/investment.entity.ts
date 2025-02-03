@@ -27,25 +27,25 @@ export class InvestmentEntity implements Investment {
   currency: CurrencyEntity;
 
   @Expose()
-  @ApiProperty()
+  @ApiProperty({ type: Number, readOnly: true })
   get pairInvestment() {
     return this.buyPrice * this.currencyInvestment;
   }
 
   @Expose()
-  @ApiProperty()
+  @ApiProperty({ type: Number, readOnly: true })
   get pairAmount() {
     return this.currencyInvestment * this.currency.price;
   }
 
   @Expose()
-  @ApiProperty()
+  @ApiProperty({ type: Number, readOnly: true })
   get pairVariation() {
     return this.pairAmount - this.pairInvestment;
   }
 
   @Expose()
-  @ApiProperty()
+  @ApiProperty({ type: Number, readOnly: true })
   get percentageVariation() {
     return (this.pairVariation / this.pairInvestment) * 100;
   }

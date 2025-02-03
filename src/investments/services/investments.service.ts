@@ -19,7 +19,7 @@ export class InvestmentsService {
     private readonly binanceUtils: BinanceUtils,
   ) {}
 
-  async investments(queryParams: GeInvestmentsDto) {
+  async investments(queryParams: GeInvestmentsDto, userId: number) {
     const { take, page, getAll } = queryParams;
 
     const querySpecs = !getAll
@@ -32,9 +32,12 @@ export class InvestmentsService {
     // Fetch all investment records from the database using Prisma
     const data = await this.prisma.investment.findMany({
       ...querySpecs,
+      where: {
+        userId,
+      },
     });
 
-    const itemCount = await this.prisma.investment.count();
+    const itemCount = await this.prisma.investment.count({ where: { userId } });
 
     // Check if any investment records exist
     if (data.length) {

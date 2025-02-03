@@ -10,6 +10,8 @@ import { WalletModule } from './wallet/wallet.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { HealthModule } from './health/health.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './auth/guards/roles.guard';
 @Module({
   imports: [
     // PrismaModule,

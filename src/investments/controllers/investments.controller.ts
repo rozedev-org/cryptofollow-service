@@ -7,6 +7,7 @@ import {
   Post,
   Put,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -14,6 +15,10 @@ import { InvestmentsService } from '../services/investments.service';
 import { CreateInvestmentDto, GeInvestmentsDto } from '../dto/investments.dto';
 import { FindByIdDto } from 'src/dtos/generic.dto';
 import { JwtAuthGuard } from '@app/auth/guards/jwt-authentication.guard';
+import { ApiOkResponsePaginated } from '@common/decorators/ApiOkResponsePaginated';
+import { InvestmentEntity } from '../entities/investment.entity';
+import { Request } from 'express';
+import { PayloadToken } from '@app/auth/models/token.model';
 
 @ApiTags('investments')
 @UseGuards(JwtAuthGuard)
@@ -21,10 +26,12 @@ import { JwtAuthGuard } from '@app/auth/guards/jwt-authentication.guard';
 export class InvestmentsController {
   constructor(private readonly investmentsService: InvestmentsService) {}
 
-  // @ApiOkResponsePaginated(InvestmentEntity)
+  @ApiOkResponsePaginated(InvestmentEntity)
   @Get()
-  getInvestments(@Query() queryParams: GeInvestmentsDto) {
-    return this.investmentsService.investments(queryParams);
+  getInvestments(@Query() queryParams: GeInvestmentsDto, @Req() req: Request) {
+    const user = req.user as PayloadToken;
+
+    return this.investmentsService.investments(queryParams, user.sub);
   }
 
   @Get(':id')

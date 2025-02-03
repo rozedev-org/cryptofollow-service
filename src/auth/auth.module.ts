@@ -11,6 +11,8 @@ import { LocalStrategy } from './strategies/local.strategy';
 import config from '@app/config';
 import { PrismaService } from '@app/database/prisma.service';
 import { GoogleStrategy } from './strategies/google.strategy';
+import { RolesGuard } from './guards/roles.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [

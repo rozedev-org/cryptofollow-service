@@ -3,6 +3,8 @@ import { UsersService } from '../../users/services/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from '@app/users/dto/user.dto';
+import { UserRole } from '@prisma/client';
+import { PayloadToken } from '../models/token.model';
 @Injectable()
 export class AuthService {
   constructor(
@@ -36,13 +38,11 @@ export class AuthService {
     }
   }
 
-  public generateToken(userId: number, expiresIn: Date) {
-    const payload: {
-      userId: number;
-      expiresIn: Date;
-    } = {
-      userId,
+  public generateToken(userId: number, role: UserRole, expiresIn: Date) {
+    const payload: PayloadToken = {
+      sub: userId,
       expiresIn,
+      role,
     };
     const token = this.jwtService.sign(payload);
 
@@ -53,7 +53,7 @@ export class AuthService {
     try {
       const tokenWithoutBearer = token.replace('Bearer ', '');
       const verify = this.jwtService.verify(tokenWithoutBearer);
-      const user = await this.userService.findOne({ id: verify.userId });
+      const user = await this.userService.findOne({ id: verify.sub });
 
       return { user, expiresIn: verify.expiresIn };
     } catch (e) {

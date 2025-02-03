@@ -44,7 +44,7 @@ export class AuthController {
     });
 
     const expiresIn = dt.toJSDate();
-    const token = this.authService.generateToken(user.id, expiresIn);
+    const token = this.authService.generateToken(user.id, user.role, expiresIn);
 
     response
       .cookie('Authentication', token, {
@@ -106,7 +106,7 @@ export class AuthController {
     });
 
     const expiresIn = dt.toJSDate();
-    const token = this.authService.generateToken(user.id, expiresIn);
+    const token = this.authService.generateToken(user.id, user.role, expiresIn);
 
     response
       .cookie('Authentication', token, {
