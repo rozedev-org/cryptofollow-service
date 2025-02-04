@@ -10,7 +10,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CurrencyService } from '../services/currency.service';
-import { CreateCurrencyDto, GetCurrenciesDto, UpdateCurrencyDto } from '../dto/currency.dto';
+import {
+  CreateCurrencyDto,
+  GetBinanceTickerPriceDto,
+  GetCurrenciesDto,
+  UpdateCurrencyDto,
+} from '../dto/currency.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { FindByIdDto } from '../../dtos/generic.dto';
 import { JwtAuthGuard } from '@app/auth/guards/jwt-authentication.guard';
@@ -47,5 +52,10 @@ export class CurrencyController {
   @Delete(':id')
   deleteCurrency(@Param() params: FindByIdDto) {
     return this.currencyService.delete(params);
+  }
+
+  @Get('binance/ticker/price')
+  getBinanceTickerPrice(@Query() queryParams: GetBinanceTickerPriceDto) {
+    return this.currencyService.getBinanceTickerPrice(queryParams);
   }
 }
