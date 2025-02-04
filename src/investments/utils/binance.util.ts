@@ -4,6 +4,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { lastValueFrom } from 'rxjs';
 import { PriceTickerResponse } from './binance.utils.interface';
+import { GetBinanceTickerPriceDto } from '../dto/currency.dto';
 
 @Injectable()
 export class BinanceUtils {
@@ -37,5 +38,28 @@ export class BinanceUtils {
   catch(error: any) {
     console.log('error :>> ', error);
     throw new Error('Failed to fetch currency price');
+  }
+
+  async getPriceTicker({ symbol }: GetBinanceTickerPriceDto) {
+    try {
+      console.log('symbol, symbols :>> ', symbol);
+      const { host } = this.configService.binance;
+      const queryParams = `${symbol ? `symbol=${symbol}` : ''}`;
+      console.log('queryParams :>> ', queryParams);
+      console.log(
+        ' `${host}/api/v3/ticker/price` :>> ',
+        `${host}/api/v3/ticker/price`,
+      );
+      const response = await lastValueFrom(
+        this.httpService.get<PriceTickerResponse[]>(
+          `${host}/api/v3/ticker/price?${queryParams}`,
+        ),
+      );
+
+      return response.data;
+    } catch (error: any) {
+      console.log('error :>> ', error);
+      throw new Error('Failed to fetch currency price');
+    }
   }
 }

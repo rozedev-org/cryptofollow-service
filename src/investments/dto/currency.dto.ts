@@ -1,6 +1,6 @@
 import { PageOptionsDto } from '@common/dtos/page.dto';
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateCurrencyDto {
   @ApiProperty({ example: 'BONK' })
@@ -22,6 +22,20 @@ export class UpdateCurrencyDtoWithId extends PartialType(CreateCurrencyDto) {
 
 export class UpdateCurrencyDto extends PartialType(CreateCurrencyDto) {}
 
-
-
 export class GetCurrenciesDto extends PageOptionsDto {}
+
+export class GetBinanceTickerPriceDto {
+  @ApiProperty({ example: 'BTCUSDT', required: false })
+  @IsString()
+  @IsOptional()
+  symbol?: string;
+
+  // @ApiProperty({
+  //   example: ['BTCUSDT', 'ETHUSDT'],
+  //   required: false,
+  //   type: [String],
+  // })
+  // @IsString({ each: true })
+  // @IsOptional()
+  // symbols?: string[];
+}

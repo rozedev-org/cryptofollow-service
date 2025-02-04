@@ -4,6 +4,7 @@ import axios from 'axios';
 import { convert } from 'openapi-to-postmanv2';
 import { Logger } from '@nestjs/common';
 import { removeIds } from '../id.utils';
+import https from 'node:https';
 export async function updatePostmanCollection({
   swagger,
   apiKey,
@@ -27,6 +28,9 @@ export async function updatePostmanCollection({
         'X-Api-Key': apiKey,
         'Content-Type': 'application/json',
       },
+      httpsAgent: new https.Agent({
+        rejectUnauthorized: false,
+      }),
     },
   );
 
