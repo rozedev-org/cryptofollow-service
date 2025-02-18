@@ -9,6 +9,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -17,7 +18,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreateUserDto, UpdateUserDto } from '../dto/user.dto';
+import { CreateUserDto, GeUsersDto, UpdateUserDto } from '../dto/user.dto';
 import { UserEntity } from '../entities/user.entity';
 import { UsersService } from '../services/users.service';
 
@@ -40,8 +41,8 @@ export class UsersController {
   }
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  findAll(@Query() queryParams: GeUsersDto) {
+    return this.usersService.findAll(queryParams);
   }
 
   @Get(':id')

@@ -5,10 +5,16 @@ import {
 } from '@nestjs/common';
 import { FindByIdDto } from '@app/dtos/generic.dto';
 import { PrismaService } from '@app/database/prisma.service';
-import { CreateUserDto, FindByEmailDto, UpdateUserDto } from '../dto/user.dto';
+import {
+  CreateUserDto,
+  FindByEmailDto,
+  GeUsersDto,
+  UpdateUserDto,
+} from '../dto/user.dto';
 import * as bcrypt from 'bcrypt';
 import { UserEntity } from '../entities/user.entity';
 import { User as UserModel } from '@prisma/client';
+import { PageMetaDto } from '@common/dtos/page-meta.dto';
 
 @Injectable()
 export class UsersService {
@@ -36,10 +42,35 @@ export class UsersService {
     return new UserEntity(newUser);
   }
 
-  async findAll() {
-    return (await this.prisma.user.findMany()).map(
-      (user) => new UserEntity(user),
-    );
+  async findAll(queryParams: GeUsersDto) {
+    const { take, page, getAll } = queryParams;
+
+    const querySpecs = !getAll
+      ? {
+          take,
+          skip: (page - 1) * take,
+        }
+      : undefined;
+
+    const data = await this.prisma.user.findMany({ ...querySpecs });
+    const itemCount = await this.prisma.user.count();
+
+    const pageMetaDto = new PageMetaDto({
+      itemCount,
+      pageOptionsDto: {
+        ...queryParams,
+        take: getAll ? itemCount : queryParams.take,
+      },
+    });
+    const users = data.map((u) => new UserEntity(u));
+
+    return {
+      data: users,
+      meta: pageMetaDto,
+    };
+    // return (await this.prisma.user.findMany({...querySpecs,})).map(
+    //   (user) => new UserEntity(user),
+    // );
   }
 
   async findOne({ id }: FindByIdDto) {

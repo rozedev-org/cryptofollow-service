@@ -1,3 +1,4 @@
+import { PageOptionsDto } from '@common/dtos/page.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { UserRole } from '@prisma/client';
 import {
@@ -66,3 +67,5 @@ export class FindByEmailDto {
   @IsEmail()
   email: string;
 }
+
+export class GeUsersDto extends PageOptionsDto {}
