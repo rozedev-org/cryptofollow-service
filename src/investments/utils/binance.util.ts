@@ -42,17 +42,12 @@ export class BinanceUtils {
 
   async getPriceTicker({ symbol }: GetBinanceTickerPriceDto) {
     try {
-      console.log('symbol, symbols :>> ', symbol);
       const { host } = this.configService.binance;
-      const queryParams = `${symbol ? `symbol=${symbol}` : ''}`;
-      console.log('queryParams :>> ', queryParams);
-      console.log(
-        ' `${host}/api/v3/ticker/price` :>> ',
-        `${host}/api/v3/ticker/price`,
-      );
+      // const queryParams = `${symbol ? `symbol=${symbol}` : ''}`;
+     
       const response = await lastValueFrom(
         this.httpService.get<PriceTickerResponse[]>(
-          `${host}/api/v3/ticker/price?${queryParams}`,
+          `${host}/api/v3/ticker/price`,
         ),
       );
 

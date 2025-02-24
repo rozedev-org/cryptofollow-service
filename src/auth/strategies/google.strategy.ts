@@ -4,6 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, VerifyCallback } from 'passport-google-oauth2';
 import { AuthService } from '../services/auth.service';
 import config from '@app/config';
+import { UserRole } from '@prisma/client';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
@@ -34,6 +35,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         firstName: name.givenName,
         lastName: name.familyName,
         password: '',
+        role: UserRole.USER,
       });
     }
 

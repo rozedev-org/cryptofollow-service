@@ -1,7 +1,10 @@
+import { PageOptionsDto } from '@common/dtos/page.dto';
 import { ApiProperty } from '@nestjs/swagger';
+import { UserRole } from '@prisma/client';
 import {
   IsBoolean,
   IsEmail,
+  IsEnum,
   IsNumber,
   IsOptional,
   IsString,
@@ -23,6 +26,13 @@ export class CreateUserDto {
   @ApiProperty({ example: 'Doe' })
   @IsString()
   lastName: string;
+
+  @ApiProperty({
+    enum: UserRole,
+    enumName: 'Role',
+  })
+  @IsEnum(UserRole)
+  role: UserRole;
 }
 
 export class UpdateUserDto {
@@ -57,3 +67,5 @@ export class FindByEmailDto {
   @IsEmail()
   email: string;
 }
+
+export class GeUsersDto extends PageOptionsDto {}

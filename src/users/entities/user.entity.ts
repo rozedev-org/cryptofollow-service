@@ -10,6 +10,7 @@ export class UserEntity implements UserModel {
     password,
     picture,
     role,
+    isEnabled,
   }: UserModel) {
     this.id = id;
     this.email = email;
@@ -18,6 +19,7 @@ export class UserEntity implements UserModel {
     this.password = password;
     this.picture = picture;
     this.role = role;
+    this.isEnabled = isEnabled;
   }
 
   @ApiProperty()

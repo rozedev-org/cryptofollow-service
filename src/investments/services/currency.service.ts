@@ -84,7 +84,9 @@ export class CurrencyService implements OnModuleInit {
   async getBinanceTickerPrice({ symbol }: GetBinanceTickerPriceDto) {
     const currencies = await this.binanceUtils.getPriceTicker({ symbol });
 
-    return currencies.filter((currency) => currency.symbol.includes('USDT'));
+    return currencies
+      .filter((currency) => currency.symbol.includes('USDT'))
+      .map((c) => ({ symbol: c.symbol.replace('USDT', ''), price: c.price }));
   }
 
   async currencies(queryParams: GetCurrenciesDto) {
