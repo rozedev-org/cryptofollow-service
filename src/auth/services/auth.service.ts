@@ -1,9 +1,11 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UsersService } from '../../users/services/users.service';
-import * as bcrypt from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from '@app/users/dto/user.dto';
+import { UserEntity } from '@app/users/entities/user.entity';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { UserRole } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
+import { plainToInstance } from 'class-transformer';
+import { UsersService } from '../../users/services/users.service';
 import { PayloadToken } from '../models/token.model';
 @Injectable()
 export class AuthService {
@@ -24,7 +26,7 @@ export class AuthService {
         { id: user.id },
         { loginTries: 0, isEnabled: true },
       );
-      return user;
+      return plainToInstance(UserEntity, user);
     } else {
       user.loginTries += 1;
       if (user.loginTries > 3) {

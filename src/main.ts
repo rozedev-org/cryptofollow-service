@@ -39,7 +39,6 @@ async function bootstrap() {
     app.useGlobalInterceptors(
       new ClassSerializerInterceptor(app.get(Reflector)),
     );
-
     const swaggerConfig = new DocumentBuilder()
       .setTitle('Crypto Follow Service')
       .setDescription('Service of Crypto Follow')

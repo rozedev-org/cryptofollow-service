@@ -28,7 +28,6 @@ export class InvestmentsController {
   @Get()
   getInvestments(@Query() queryParams: GeInvestmentsDto, @Req() req: Request) {
     const user = req.user as PayloadToken;
-
     return this.investmentsService.investments(queryParams, user.sub);
   }
 
