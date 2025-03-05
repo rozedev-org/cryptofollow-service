@@ -31,7 +31,12 @@ export class PageDto<T> {
 }
 
 export class PageOptionsDto {
-  @ApiPropertyOptional({ enum: Order, default: Order.ASC, enumName: 'Order' })
+  @ApiPropertyOptional({
+    enum: Order,
+    default: Order.ASC,
+    enumName: 'Order',
+    example: Order.ASC,
+  })
   @IsEnum(Order)
   @IsOptional()
   readonly order?: Order = Order.ASC;

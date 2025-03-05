@@ -1,6 +1,6 @@
 import { PageOptionsDto } from '@common/dtos/page.dto';
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { IsNumber } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateInvestmentDto {
   @ApiProperty({ example: 0.00003634 })
@@ -20,4 +20,9 @@ export class CreateInvestmentDto {
 
 export class UpdateInvestmentDto extends PartialType(CreateInvestmentDto) {}
 
-export class GeInvestmentsDto extends PageOptionsDto {}
+export class GeInvestmentsDto extends PageOptionsDto {
+  @ApiProperty({ example: 'BONK' })
+  @IsOptional()
+  @IsString()
+  currencyName?: string;
+}

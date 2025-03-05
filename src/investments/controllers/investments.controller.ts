@@ -27,8 +27,8 @@ export class InvestmentsController {
   // @ApiOkResponsePaginated(InvestmentEntity)
   @Get()
   getInvestments(@Query() queryParams: GeInvestmentsDto, @Req() req: Request) {
+    console.log('"entro" :>> ', queryParams);
     const user = req.user as PayloadToken;
-
     return this.investmentsService.investments(queryParams, user.sub);
   }
 
