@@ -20,7 +20,7 @@ export class InvestmentsService {
   ) {}
 
   async investments(queryParams: GeInvestmentsDto, userId: number) {
-    const { take, page, getAll, filters } = queryParams;
+    const { take, page, getAll, currencyName } = queryParams;
 
     const querySpecs = !getAll
       ? {
@@ -34,7 +34,14 @@ export class InvestmentsService {
       ...querySpecs,
       where: {
         userId,
-        ...filters,
+        currency: currencyName
+          ? {
+              name: {
+                startsWith: currencyName,
+                mode: 'insensitive',
+              },
+            }
+          : undefined,
       },
       orderBy: {
         id: 'desc',

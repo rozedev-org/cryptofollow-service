@@ -28,24 +28,44 @@ export class WalletService {
       (investment) => new InvestmentEntity(investment, investment.currency),
     );
 
-    const balance = formatedInvesment.reduce(
-      (acc, investment) => acc + investment.pairAmount,
-      0,
+    let result = formatedInvesment.reduce(
+      (acc, invesment) => {
+        return {
+          balance: acc.balance + invesment.pairAmount,
+          percentageVariation:
+            acc.percentageVariation + invesment.percentageVariation,
+        };
+      },
+      {
+        balance: 0,
+        percentageVariation: 0,
+      } as BalanceEntity,
     );
 
-    return { balance };
+    result.percentageVariation =
+      result.percentageVariation / formatedInvesment.length;
+
+    return result;
   }
 
   async getBalanceByCurrencies(
     queryParams: GetBalanceByCurrencyDto,
     userId: number,
   ) {
-    const { take, page, getAll } = queryParams;
+    const { take, page, getAll, currencyName } = queryParams;
 
     const invesments = await this.prisma.investment.findMany({
       include: { currency: true },
       where: {
         userId,
+        currency: currencyName
+          ? {
+              name: {
+                startsWith: currencyName,
+                mode: 'insensitive',
+              },
+            }
+          : undefined,
       },
     });
 
@@ -68,9 +88,6 @@ export class WalletService {
     }, [] as InvestmentEntity[]);
 
     const balanceByCurrency = formatedInvesment.map((investment) => {
-      console.log('investment :>> ', investment);
-      console.log('investment :>> ', investment.pairVariation);
-
       return new BalanceByCurrencyEntity({
         currencyInvestment: investment.currencyInvestment,
         pairInvestment: investment.pairInvestment,

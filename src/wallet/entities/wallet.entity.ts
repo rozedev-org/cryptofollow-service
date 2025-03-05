@@ -4,6 +4,9 @@ import { CurrencyEntity } from '../../investments/entities/currency.entity';
 export class BalanceEntity {
   @ApiProperty()
   balance: number;
+
+  @ApiProperty()
+  percentageVariation: number;
 }
 
 export class BalanceByCurrencyEntity {
