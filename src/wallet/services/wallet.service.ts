@@ -68,13 +68,15 @@ export class WalletService {
     }, [] as InvestmentEntity[]);
 
     const balanceByCurrency = formatedInvesment.map((investment) => {
+      console.log('investment :>> ', investment);
+      console.log('investment :>> ', investment.pairVariation);
+
       return new BalanceByCurrencyEntity({
         currencyInvestment: investment.currencyInvestment,
         pairInvestment: investment.pairInvestment,
         pairAmount: investment.pairAmount,
         pairVariation: investment.pairVariation,
-        percentageVariation:
-          (investment.pairVariation / investment.pairInvestment) * 100,
+        percentageVariation: investment.percentageVariation,
         currencyId: investment.currencyId,
         currency: investment.currency,
       });

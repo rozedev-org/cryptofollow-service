@@ -104,7 +104,6 @@ export class AuthController {
     const dt = DateTime.now().plus({
       seconds: Number(this.configService.jwtExpirationTime),
     });
-
     const expiresIn = dt.toJSDate();
     const token = this.authService.generateToken(user.id, user.role, expiresIn);
 
